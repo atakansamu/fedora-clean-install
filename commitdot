@@ -1,0 +1,5 @@
+#!/bin/sh
+
+git add .
+git commit -m "Automated fresh-install-script commit"
+git push origin master

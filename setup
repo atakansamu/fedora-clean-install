@@ -1,22 +1,8 @@
 #!/bin/sh
 
-CONFIG_STOW=$HOME
-STOW_FILES=("i3" "tmux" "tmux-sessionizer" "personal" "nvim" "zsh" )
-# Delete old config files before stowing
-for dir in "${STOW_FILES[@]}"
-do
-	rm -rf $XDG_CONFIG_HOME/"$dir"
-done
 
-rm -f $HOME/.zshrc $HOME/.zsh_profile $HOME/.gitconfig
-# Stow config files
-stow -d "$DOTFILES" -t "$HOME" \
-	pconfig \
-	zsh \
-	nvim \
-	git
-
-INSTALL_SCRIPTS_DIR=$DOTFILES/s_scripts
+git clone git@github.com:atakansamu/.dotfiles.git
+INSTALL_SCRIPTS_DIR=./s_scripts
 
 
 for i_script in $( find $INSTALL_SCRIPTS_DIR -maxdepth 2 -type f -not -path '*./\.*' )
