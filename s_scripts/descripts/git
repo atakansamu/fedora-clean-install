@@ -1,4 +1,4 @@
 #!/bin/sh
 
 
-sudo dnf install git
+sudo dnf -y install git

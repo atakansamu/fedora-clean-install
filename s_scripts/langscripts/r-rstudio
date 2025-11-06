@@ -1,5 +1,5 @@
-#!/bin/zsh
+#!/bin/sh
 
-sudo dnf install -y r
-sudo dnf copr enable iucar/rstudio
-sudo dnf install -y rstudio-desktop
+sudo dnf -y install r
+sudo dnf -y copr enable iucar/rstudio
+sudo dnf -y install rstudio-desktop

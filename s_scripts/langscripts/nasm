@@ -1,4 +1,4 @@
 #!/bin/sh
 
 
-sudo dnf install nasm
+sudo dnf -y install nasm

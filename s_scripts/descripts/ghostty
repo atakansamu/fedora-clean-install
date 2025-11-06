@@ -1,4 +1,4 @@
 #!/bin/sh
 
-sudo dnf copr enable scottames/ghostty
-sudo dnf install ghostty
+sudo dnf -y copr enable scottames/ghostty
+sudo dnf -y install ghostty
