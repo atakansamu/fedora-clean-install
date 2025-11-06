@@ -1,0 +1,91 @@
+#!/bin/sh
+
+
+if [ ! -d "$HOME/.dotfiles" ]; then
+	echo ".dotfiles repo missing cloning..."
+	# git clone git@github.com:atakansamu/.dotfiles.git $HOME/
+else
+	echo ".dotfiles exists aborting cloning..."
+fi
+
+if [[ ! -v NO_STOW ]]; then
+	echo "setting up stow files..."
+	# sh ~/.dotfiles/setup
+fi
+
+INSTALL_SCRIPTS_DIR=./s_scripts
+
+
+VALID_ARGS=$(getopt -o :e:o:x: --long exclude:,only-dirs:,exclude-dirs: -- "$@")
+
+if [[ $? -ne 0 ]]; then
+	echo "invalid args"
+	exit 1;
+fi
+
+eval set -- "$VALID_ARGS"
+EXCLUDE_SCRIPTS=()
+ONLY_DIR_SCRIPTS=()
+EXCLUDE_DIRS=()
+SCRIPT_DIRS=()
+
+readarray -t SCRIPT_DIRS < <( find $INSTALL_SCRIPTS_DIR -maxdepth 1 -type d )
+SCRIPT_DIRS=("${SCRIPT_DIRS[@]:1}")
+
+
+while [ : ]; do
+	case "$1" in
+		-e | --exclude)
+			echo "Processing excluded scripts: '$2'"
+			IFS=' ' read -ra temp <<< "$2"
+			EXCLUDE_SCRIPTS+=("${temp[@]}")
+			shift 2
+			;;
+		-o | --only-dirs)
+			echo "Processing only the script directories: '$2'"
+			IFS=' ' read -ra temp <<< "$2"
+			ONLY_DIR_SCRIPTS+=("${temp[@]}")
+			shift 2
+			;;
+		-x | --exclude-dirs)
+			echo "Processing excluded script dirs: '$2'"
+			IFS=' ' read -ra temp <<< "$2"
+			EXCLUDE_DIRS+=("${temp[@]}")
+			shift 2
+			;;
+		--)
+			shift;
+			break
+			;;
+	esac
+done
+
+SEARCH_DIR=()
+if [[  ${#ONLY_DIR_SCRIPTS[@]} -eq 0 && ${#EXCLUDE_DIRS[@]} -eq 0 ]]; then
+	SEARCH_DIR=(${SCRIPT_DIRS[@]})
+fi
+
+if [ ${#ONLY_DIR_SCRIPTS[@]} -gt 0 ]; then
+	for dir in "${ONLY_DIR_SCRIPTS[@]}"; do
+		SEARCH_DIR+=("$INSTALL_SCRIPTS_DIR/$dir")
+	done
+else
+	SEARCH_DIR=(${SCRIPT_DIRS[@]})
+fi
+
+find_cmd=( -o -path "dummy/path" )
+for dir in "${EXCLUDE_DIRS[@]}"; do
+	find_cmd+=( -o -path "$INSTALL_SCRIPTS_DIR/$dir" )
+done
+
+for file in "${EXCLUDE_SCRIPTS[@]}"; do
+	find_cmd+=( -o -name "$file" )
+done
+
+for i_script in $( find "${SEARCH_DIR[@]}" -maxdepth 2 \( "${find_cmd[@]:1}" \) -prune -o -name '.*' -prune -o -type f -print)
+do 
+	# Uncomment in a fresh install
+	# bash "$i_script"
+	echo "$i_script"
+done
+

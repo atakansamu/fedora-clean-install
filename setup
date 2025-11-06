@@ -1,14 +1,5 @@
 #!/bin/sh
 
 
-git clone git@github.com:atakansamu/.dotfiles.git
-INSTALL_SCRIPTS_DIR=./s_scripts
-
-
-for i_script in $( find $INSTALL_SCRIPTS_DIR -maxdepth 2 -type f -not -path '*./\.*' )
-do 
-	# Uncomment in a fresh install
-	# ./"$i_script"
-	echo "$i_script"
-done
-
+bash ./install_script -o "langscripts"
+NO_STOW=true bash ./install_script -x "langscripts"
