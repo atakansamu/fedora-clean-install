@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 
 
 curl -s "https://get.sdkman.io?rcupdate=false" | bash

@@ -3,14 +3,18 @@
 
 if [ ! -d "$HOME/.dotfiles" ]; then
 	echo ".dotfiles repo missing cloning..."
-	# git clone git@github.com:atakansamu/.dotfiles.git $HOME/
+	git clone git@github.com:atakansamu/.dotfiles.git $HOME/.dotfiles
 else
 	echo ".dotfiles exists aborting cloning..."
 fi
 
 if [[ ! -v NO_STOW ]]; then
+	if ! command -v stow
+	then 
+		sudo dnf -y install stow
+	fi
 	echo "setting up stow files..."
-	# sh ~/.dotfiles/setup
+	bash ~/.dotfiles/setup
 fi
 
 INSTALL_SCRIPTS_DIR=./s_scripts
@@ -85,7 +89,7 @@ done
 for i_script in $( find "${SEARCH_DIR[@]}" -maxdepth 2 \( "${find_cmd[@]:1}" \) -prune -o -name '.*' -prune -o -type f -print)
 do 
 	# Uncomment in a fresh install
-	# bash "$i_script"
-	echo "$i_script"
+	bash "$i_script"
+	# echo "$i_script"
 done
 

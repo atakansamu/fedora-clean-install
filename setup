@@ -1,5 +1,5 @@
 #!/bin/sh
 
 
-bash ./install_script -o "langscripts"
-NO_STOW=true bash ./install_script -x "langscripts"
+bash ./install_script -o "descripts"
+NO_STOW=true bash ./install_script -x "descripts"
