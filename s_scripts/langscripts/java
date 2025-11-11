@@ -1,7 +1,12 @@
 #!/bin/zsh
 
-
-curl -s "https://get.sdkman.io?rcupdate=false" | bash
-source ~/.zshrc
+if [ ! -f ~/.sdkman/bin/sdkman-init.sh ]; then
+	curl -s "https://get.sdkman.io?rcupdate=false" | bash
+	source ~/.zshrc
+else
+	source ~/.sdkman/bin/sdkman-init.sh
+fi
 sdk install java 25-tem
 sdk install kotlin
+sdk install maven
+sdk install gradle
