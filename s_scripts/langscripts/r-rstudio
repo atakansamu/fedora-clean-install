@@ -1,5 +1,0 @@
-#!/bin/sh
-
-sudo dnf -y install r
-sudo dnf -y copr enable iucar/rstudio
-sudo dnf -y install rstudio-desktop
